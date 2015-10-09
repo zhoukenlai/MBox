@@ -17,7 +17,7 @@ public class MainActivity extends FragmentActivity
 
     private FragmentPagerAdapter mAdapter;
     private ViewPager mViewPager;
-    private List<String> mDatas = Arrays.asList("查看", "登记", "报表");
+    private List<String> mDatas = Arrays.asList("查看1", "登记1", "报表");
 
     private ViewPagerIndicator mIndicator;
 
