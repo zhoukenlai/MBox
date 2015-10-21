@@ -1,11 +1,14 @@
 package lai.ken.mbox;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -30,31 +33,58 @@ public class MyListFragment extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SimpleAdapter adapter = new SimpleAdapter(getActivity(), getData(),
-                R.layout.listviewitem,
-                new String[]{"img","title","info"},
-                new int[]{R.id.img,R.id.title,R.id.info});
-        setListAdapter(adapter);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //相当于Fragment的onResume
+            SimpleAdapter adapter = new SimpleAdapter(getActivity(), getData(),
+                    R.layout.listviewitem,
+                    new String[]{"img","title","info","opttime"},
+                    new int[]{R.id.img,R.id.title,R.id.info,R.id.opttime});
+            setListAdapter(adapter);
+        }
+//        else {
+//            //相当于Fragment的onPause
+//        }
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        System.out.println(l.getChildAt(position));
-        //HashMap<String, Object> view= (HashMap<String, Object>) l.getItemAtPosition(position);
-        Toast.makeText(getActivity(), "XXXX", Toast.LENGTH_LONG).show();
+        try {
+            HashMap<String, Object> view = (HashMap<String, Object>) l.getItemAtPosition(position);
+            Toast.makeText(getActivity(), view.get("title").toString(), Toast.LENGTH_LONG).show();
+        }
+        catch( Exception e) {
+            Log.e("HashMap",e.toString() );
+        }
     }
 
     private List<Map<String, Object>> getData() {
         List<Map<String ,Object>> list = new ArrayList<>();
-        String[] strs = {"主题1","主题2","主题3","主题4","主题5"};
-        for (String str : strs) {
+        // 从数据库中取
+        SQLiteDatabase db;
+        db = getActivity().openOrCreateDatabase("MBox.db", Context.MODE_PRIVATE, null);
+        Cursor c = db.rawQuery("SELECT * FROM MBOX ORDER BY OPTTIME DESC LIMIT 10 ",null);
+        while (c.moveToNext()) {
+            String stitle = c.getString(c.getColumnIndex("TITLE"));
+            String snote = c.getString(c.getColumnIndex("NOTE"));
+            String sopttime = c.getString(c.getColumnIndex("OPTTIME"));
+            String spic = c.getString(c.getColumnIndex("PIC"));
+
             Map<String, Object> map = new HashMap<>();
             map.put("img", R.drawable.b111);
-            map.put("title", str);
-            map.put("info", str+"数据过滤，生成运营商字段，根据系统ID和运营商，通过表TB_DISPATCH_CONFIG可以定位到发送通道ID（多条时，按权重来）");
+            map.put("title", stitle);
+            map.put("info", snote);
+            map.put("opttime", sopttime);
+
             list.add(map);
         }
+        c.close();
+        db.close();
 
         return list;
     }

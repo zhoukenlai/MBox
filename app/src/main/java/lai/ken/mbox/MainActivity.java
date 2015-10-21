@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -17,9 +19,10 @@ public class MainActivity extends FragmentActivity
 
     private FragmentPagerAdapter mAdapter;
     private ViewPager mViewPager;
-    private List<String> mDatas = Arrays.asList("查看1", "登记1", "报表");
+    private List<String> mDatas = Arrays.asList("查看", "登记", "报表");
 
     private ViewPagerIndicator mIndicator;
+    public SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,8 +38,12 @@ public class MainActivity extends FragmentActivity
         mIndicator.setTabItemTitles(mDatas);
         mViewPager.setAdapter(mAdapter);
         //设置关联的ViewPager
-        mIndicator.setViewPager(mViewPager,0);
+        mIndicator.setViewPager(mViewPager, 0);
 
+        //打开或创建test.db数据库
+        db = openOrCreateDatabase("MBox.db", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS MBOX(_ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE VARCHAR, NOTE VARCHAR, OPTTIME VARCHAR, PIC VARCHAR)");
+        db.close();
     }
 
     private void initDatas()

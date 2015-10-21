@@ -13,7 +13,7 @@
         android:text="@string/title"/>
 
     <EditText
-        android:id="@+id/e1"
+        android:id="@+id/etitle"
         android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -28,7 +28,7 @@
         android:text="@string/info"/>
 
     <EditText
-        android:id="@+id/v2"
+        android:id="@+id/enote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -42,10 +42,11 @@
         android:text="@string/pic"/>
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/imageView" />
+        android:id="@+id/im"
+        android:background="#f5dcf2"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal" android:layout_width="match_parent"
@@ -57,7 +58,8 @@
             android:background="@drawable/blue1"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save"/>
@@ -67,10 +69,11 @@
             android:textSize="17sp"
             android:background="@drawable/blue1"
             android:layout_marginLeft="30dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/back"/>
+            android:text="@string/clear"/>
 
     </LinearLayout>
 
